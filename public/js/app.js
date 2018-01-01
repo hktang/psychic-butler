@@ -42987,7 +42987,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         axios.get('tasks').then(function (response) {
-            console.log(response);
             _this.tasks = response.data;
         }).catch(function (error) {
             console.log(error);
@@ -43122,7 +43121,12 @@ var render = function() {
         _c("div", { staticClass: "panel panel-default" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "panel-body" }, [_c("task-input")], 1),
+          _c(
+            "div",
+            { staticClass: "panel-body" },
+            [_c("task-input", { attrs: { tasks: _vm.tasks } })],
+            1
+          ),
           _vm._v(" "),
           _c("table", { staticClass: "table" }, [
             _c(
@@ -43243,6 +43247,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['tasks'],
     data: function data() {
         return {
             inputText: ''
@@ -43250,15 +43255,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         storeTaskItem: function storeTaskItem() {
+            var _this = this;
+
             axios.post('tasks', {
                 text: this.inputText,
                 csrf: this.csrf
             }).then(function (response) {
-                console.log(response);
+                // add task to current list
+                _this.tasks.push(response.data);
             }).catch(function (error) {
                 console.log(error);
             });
 
+            // clear input text
             this.inputText = "";
         }
     },

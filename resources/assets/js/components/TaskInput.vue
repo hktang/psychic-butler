@@ -10,6 +10,7 @@
 
 <script>
     export default {
+        props : ['tasks'],
         data : function () {
             return {
                 inputText : ''
@@ -20,13 +21,15 @@
                 axios.post('tasks', {
                     text : this.inputText,
                     csrf : this.csrf
-                }).then(function (response) {
-                    console.log(response);
+                }).then( response => {
+                    // add task to current list
+                    this.tasks.push(response.data);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
 
+                // clear input text
                 this.inputText = "";
             }
         },

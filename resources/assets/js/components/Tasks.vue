@@ -6,7 +6,7 @@
                     <div class="panel-heading"><h1>Tasks</h1></div>
 
                     <div class="panel-body">
-                        <task-input></task-input>
+                        <task-input :tasks="tasks"></task-input>
                     </div>
 
                     <table class="table">
@@ -38,7 +38,6 @@
         created() {
             axios.get('tasks')
             .then( response => {
-                console.log(response);
                 this.tasks = response.data;
             })
             .catch(function (error) {

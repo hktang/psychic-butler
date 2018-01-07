@@ -42970,13 +42970,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             tasks: {}
         };
     },
@@ -43050,6 +43052,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskDeleteButton_vue__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskDeleteButton_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TaskDeleteButton_vue__);
+//
 //
 //
 //
@@ -43060,10 +43065,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id', 'text'],
+    props: ['tasks', 'taskId', 'taskText'],
     data: function data() {
         return {};
+    },
+    components: {
+        TaskDeleteButton: __WEBPACK_IMPORTED_MODULE_0__TaskDeleteButton_vue___default.a
     },
     mounted: function mounted() {
         console.log('Component TaskItem mounted.');
@@ -43078,26 +43088,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("td", { staticClass: "task-item" }, [
-    _vm._v("\n    " + _vm._s(_vm.id) + " - " + _vm._s(_vm.text) + " \n    "),
-    _vm._m(0)
-  ])
+  return _c(
+    "td",
+    { staticClass: "task-item" },
+    [
+      _vm._v(
+        "\n    " + _vm._s(_vm.taskId) + " - " + _vm._s(_vm.taskText) + " \n    "
+      ),
+      _c("task-delete-button", {
+        attrs: {
+          id: "delete-task-" + _vm.taskId,
+          taskId: _vm.taskId,
+          tasks: _vm.tasks
+        }
+      })
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: { type: "button", "aria-label": "Close" }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -43136,7 +43145,13 @@ var render = function() {
                   "tr",
                   { key: task.id },
                   [
-                    _c("task-item", { attrs: { id: task.id, text: task.text } })
+                    _c("task-item", {
+                      attrs: {
+                        tasks: _vm.tasks,
+                        taskId: task.id,
+                        taskText: task.text
+                      }
+                    })
                   ],
                   1
                 )
@@ -43250,6 +43265,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['tasks'],
     data: function data() {
         return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             inputText: ''
         };
     },
@@ -43257,6 +43273,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         storeTaskItem: function storeTaskItem() {
             var _this = this;
 
+            console.log(this.csrf);
             axios.post('tasks', {
                 text: this.inputText,
                 csrf: this.csrf
@@ -43328,6 +43345,131 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-215f729e", module.exports)
+  }
+}
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(9)
+/* script */
+var __vue_script__ = __webpack_require__(59)
+/* template */
+var __vue_template__ = __webpack_require__(60)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/TaskDeleteButton.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0e6dffce", Component.options)
+  } else {
+    hotAPI.reload("data-v-0e6dffce", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['tasks', 'taskId'],
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        };
+    },
+    methods: {
+        deleteTaskItem: function deleteTaskItem(tid) {
+            var _this = this;
+
+            axios.delete('tasks/' + tid, {
+                csrf: this.csrf,
+                id: this.taskId
+            }).then(function (response) {
+                _this.tasks = axios.get('tasks');
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // clear input text
+            this.inputText = "";
+        }
+    },
+    mounted: function mounted() {
+        console.log('Component TaskDeleteButton mounted.');
+    }
+});
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass: "close",
+      attrs: { type: "button", "aria-label": "Close" },
+      on: {
+        click: function($event) {
+          _vm.deleteTaskItem(_vm.taskId)
+        }
+      }
+    },
+    [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0e6dffce", module.exports)
   }
 }
 

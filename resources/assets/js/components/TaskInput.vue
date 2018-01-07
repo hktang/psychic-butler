@@ -13,11 +13,13 @@
         props : ['tasks'],
         data : function () {
             return {
+                csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 inputText : ''
             }
         },
         methods : {
             storeTaskItem : function () {
+                console.log(this.csrf);
                 axios.post('tasks', {
                     text : this.inputText,
                     csrf : this.csrf

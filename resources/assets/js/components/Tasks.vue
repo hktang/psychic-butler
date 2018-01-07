@@ -12,7 +12,10 @@
                     <table class="table">
                         <tbody>
                             <tr v-for="task in tasks" :key="task.id">
-                                <task-item :id="task.id" :text="task.text"></task-item>
+                                <task-item :tasks="tasks" 
+                                           :taskId="task.id" 
+                                           :taskText="task.text">
+                                </task-item>
                             </tr>
                         </tbody>
                     </table>
@@ -23,12 +26,11 @@
 </template>
 
 <script>
-    import TaskInput from './TaskInput.vue'
-    import TaskItem from './TaskItem.vue'
+    import TaskInput from './TaskInput.vue';
+    import TaskItem from './TaskItem.vue';
     export default {
         data : function (){
             return {
-                csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 tasks : {}
             }
         },

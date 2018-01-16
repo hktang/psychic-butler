@@ -23,7 +23,7 @@
                     csrf : this.csrf
                 }).then( response => {
                     this.inputText = "";
-                    this.$emit('task-added');
+                    this.$emit('task-added', response.data);
                 })
                 .catch(function (error) {
                     console.log(error);

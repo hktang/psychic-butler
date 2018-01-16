@@ -6,7 +6,7 @@
                     <div class="panel-heading"><h1>Tasks</h1></div>
 
                     <div class="panel-body">
-                        <task-input v-on:task-added="getTasks"></task-input>
+                        <task-input v-on:task-added="addTask"></task-input>
                     </div>
 
                     <table class="table">
@@ -15,8 +15,8 @@
                                 v-for="task in tasks"
                                 :key="task.id">
                                 <transition name="fade">
-                                    <task-item v-if="!task.deleted"
-                                            v-on:single-task-deleted="taskDeleted(task)"
+                                    <task-item v-if="!task.deleted_at"
+                                            v-on:single-task-deleted="deleteTask(task)"
                                             :task="task"></task-item>
                                 </transition>
                             </tr>
@@ -34,30 +34,29 @@
     export default {
         data : function (){
             return {
-                dbTasks : {},
+                tasks : {},
                 csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
         },
-        computed : {
-            tasks : function (){
-                return this.dbTasks;
-            }
-        }, 
         components: {
             TaskItem, TaskInput
             },
         methods: {
-            getTasks(){
+            getTasks(task){
                 axios.get('tasks')
                 .then( response => {
-                    this.dbTasks = response.data;
+                    this.tasks = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            taskDeleted(task){
-                task.deleted = true;
+            addTask(task){
+                this.tasks.push(task);
+                this.getTasks();
+            },
+            deleteTask(task){
+                task.deleted_at = true;
                 axios.delete('tasks/'+task.id, {
                     csrf : this.csrf,
                     id : task.id

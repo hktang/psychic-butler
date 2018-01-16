@@ -42982,32 +42982,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            dbTasks: {},
+            tasks: {},
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         };
-    },
-    computed: {
-        tasks: function tasks() {
-            return this.dbTasks;
-        }
     },
     components: {
         TaskItem: __WEBPACK_IMPORTED_MODULE_1__TaskItem_vue___default.a, TaskInput: __WEBPACK_IMPORTED_MODULE_0__TaskInput_vue___default.a
     },
     methods: {
-        getTasks: function getTasks() {
+        getTasks: function getTasks(task) {
             var _this = this;
 
             axios.get('tasks').then(function (response) {
-                _this.dbTasks = response.data;
+                _this.tasks = response.data;
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        taskDeleted: function taskDeleted(task) {
+        addTask: function addTask(task) {
+            this.tasks.push(task);
+            this.getTasks();
+        },
+        deleteTask: function deleteTask(task) {
             var _this2 = this;
 
-            task.deleted = true;
+            task.deleted_at = true;
             axios.delete('tasks/' + task.id, {
                 csrf: this.csrf,
                 id: task.id
@@ -43094,16 +43093,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['task'],
     data: function data() {
         return {
-            dbTask: this.task
+            singleTask: this.task
         };
     },
-    computed: {
-        singleTask: function singleTask() {
-            this.dbTask.deleted = false;
-            return this.dbTask;
-        }
+    mounted: function mounted() {
+        console.log("Mounted:");
+        console.log(this);
     },
-    mounted: function mounted() {},
 
     methods: {
         deleteTaskItem: function deleteTaskItem(tid) {
@@ -43170,7 +43166,7 @@ var render = function() {
           _c(
             "div",
             { staticClass: "panel-body" },
-            [_c("task-input", { on: { "task-added": _vm.getTasks } })],
+            [_c("task-input", { on: { "task-added": _vm.addTask } })],
             1
           ),
           _vm._v(" "),
@@ -43186,12 +43182,12 @@ var render = function() {
                       "transition",
                       { attrs: { name: "fade" } },
                       [
-                        !task.deleted
+                        !task.deleted_at
                           ? _c("task-item", {
                               attrs: { task: task },
                               on: {
                                 "single-task-deleted": function($event) {
-                                  _vm.taskDeleted(task)
+                                  _vm.deleteTask(task)
                                 }
                               }
                             })
@@ -43324,7 +43320,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 csrf: this.csrf
             }).then(function (response) {
                 _this.inputText = "";
-                _this.$emit('task-added');
+                _this.$emit('task-added', response.data);
             }).catch(function (error) {
                 console.log(error);
             });

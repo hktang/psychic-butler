@@ -15,16 +15,12 @@
         props: ['task'],
         data : function () {
             return {
-                dbTask : this.task,
+                singleTask : this.task,
             };
         },
-        computed: {
-            singleTask : function () {
-                this.dbTask.deleted = false;
-                return this.dbTask;
-            }
-        },
         mounted() {
+            console.log("Mounted:");
+            console.log(this);
         },
         methods: {
             deleteTaskItem : function (tid) {

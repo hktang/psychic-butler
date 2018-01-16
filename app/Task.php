@@ -4,14 +4,16 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
     use Notifiable;
+    use SoftDeletes;
 
-    protected $fillable = [
-        'text'
-    ];
+    protected $fillable = ['text'];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * Get the user that owns the task.

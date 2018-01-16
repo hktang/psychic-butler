@@ -6,16 +6,19 @@
                     <div class="panel-heading"><h1>Tasks</h1></div>
 
                     <div class="panel-body">
-                        <task-input :tasks="tasks"></task-input>
+                        <task-input v-on:task-added="getTasks"></task-input>
                     </div>
 
                     <table class="table">
                         <tbody>
-                            <tr v-for="task in tasks" :key="task.id">
-                                <task-item :tasks="tasks" 
-                                           :taskId="task.id" 
-                                           :taskText="task.text">
-                                </task-item>
+                            <tr :tasks="tasks"
+                                v-for="task in tasks"
+                                :key="task.id">
+                                <transition name="fade">
+                                    <task-item v-if="!task.deleted"
+                                            v-on:single-task-deleted="taskDeleted(task)"
+                                            :task="task"></task-item>
+                                </transition>
                             </tr>
                         </tbody>
                     </table>
@@ -31,23 +34,46 @@
     export default {
         data : function (){
             return {
-                tasks : {}
+                dbTasks : {},
+                csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
         },
+        computed : {
+            tasks : function (){
+                return this.dbTasks;
+            }
+        }, 
         components: {
             TaskItem, TaskInput
             },
-        created() {
-            axios.get('tasks')
-            .then( response => {
-                this.tasks = response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        methods: {
+            getTasks(){
+                axios.get('tasks')
+                .then( response => {
+                    this.dbTasks = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            taskDeleted(task){
+                task.deleted = true;
+                axios.delete('tasks/'+task.id, {
+                    csrf : this.csrf,
+                    id : task.id
+                })
+                .then( response => {
+                    this.getTasks();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
         },
+        created() {
+                this.getTasks();
+            },
         mounted() {
-            console.log('Component mounted.')
         }
     }
 </script>

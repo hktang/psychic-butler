@@ -10,33 +10,27 @@
 
 <script>
     export default {
-        props : ['tasks'],
         data : function () {
             return {
                 csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                inputText : ''
+                inputText : '',
             }
         },
         methods : {
             storeTaskItem : function () {
-                console.log(this.csrf);
                 axios.post('tasks', {
                     text : this.inputText,
                     csrf : this.csrf
                 }).then( response => {
-                    // add task to current list
-                    this.tasks.push(response.data);
+                    this.inputText = "";
+                    this.$emit('task-added');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-
-                // clear input text
-                this.inputText = "";
             }
         },
         mounted() {
-            console.log('Component TaskInput mounted.')
         },
     }
 </script>

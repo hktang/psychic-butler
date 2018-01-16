@@ -1,28 +1,35 @@
 <template>
-    <td class="task-item">
-        {{taskId}} - {{taskText}} 
-        <task-delete-button :id="'delete-task-'+taskId" 
-                            :taskId="taskId"
-                            :tasks="tasks">
-        </task-delete-button>
+    <td class="task-item" >
+        {{singleTask.id}} - {{singleTask.text}} 
+        <button type="button"
+            class="close"
+            aria-label="Close"
+            v-on:click="deleteTaskItem(singleTask.id)">
+        <span aria-hidden="true">&times;</span>
+    </button>
     </td>
 </template>
 
 <script>
-    import TaskDeleteButton from './TaskDeleteButton.vue';
-
     export default {
-        props: ['tasks', 'taskId', 'taskText'],
+        props: ['task'],
         data : function () {
             return {
-                
+                dbTask : this.task,
+            };
+        },
+        computed: {
+            singleTask : function () {
+                this.dbTask.deleted = false;
+                return this.dbTask;
             }
         },
-        components: {
-            TaskDeleteButton
-        },
         mounted() {
-            console.log('Component TaskItem mounted.')
+        },
+        methods: {
+            deleteTaskItem : function (tid) {
+                this.$emit('single-task-deleted');
+            }
         }
     }
 </script>

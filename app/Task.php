@@ -23,4 +23,12 @@ class Task extends Model
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * Get the spaces of a task.
+     */
+    public function spaces()
+    {
+        return $this->belongsToMany('App\Space');
+    }
+
 }

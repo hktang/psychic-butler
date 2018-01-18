@@ -42,7 +42,7 @@
             TaskItem, TaskInput
             },
         methods: {
-            getTasks(task){
+            getTasks(){
                 axios.get('tasks')
                 .then( response => {
                     this.tasks = response.data;
@@ -70,8 +70,8 @@
             },
         },
         created() {
-                this.getTasks();
-            },
+            this.getTasks();
+        },
         mounted() {
         }
     }

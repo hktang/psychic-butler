@@ -10,14 +10,7 @@
         <div v-if="inputText!=''">
             <h3>{{inputText}}</h3>
             <div class="btn-group" role="group" aria-label="Room Type">
-                <button type="button" class="btn btn-default">客厅</button>
-                <button type="button" class="btn btn-default">厨房</button>
-                <button type="button" class="btn btn-default">浴室</button>
-                <button type="button" class="btn btn-default">厕所</button>
-                <button type="button" class="btn btn-default">洗漱间</button>
-                <button type="button" class="btn btn-default">洗衣房</button>
-                <button type="button" class="btn btn-default">卧室</button>
-                <button type="button" class="btn btn-default">阳台</button>
+                <button v-for="space in spaces" :key="space.id" type="button" class="btn btn-default">{{space.name}}</button>
             </div>
         </div>
     </div>
@@ -28,10 +21,20 @@
         data : function () {
             return {
                 csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                spaces : {},
                 inputText : '',
             }
         },
         methods : {
+            getSpaces(){
+                axios.get('spaces')
+                .then( response => {
+                    this.spaces = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             storeTaskItem : function () {
                 axios.post('tasks', {
                     text : this.inputText,
@@ -44,6 +47,9 @@
                     console.log(error);
                 });
             }
+        },
+        created() {
+            this.getSpaces();
         },
         mounted() {
         },

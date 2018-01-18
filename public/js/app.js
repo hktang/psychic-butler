@@ -42990,7 +42990,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         TaskItem: __WEBPACK_IMPORTED_MODULE_1__TaskItem_vue___default.a, TaskInput: __WEBPACK_IMPORTED_MODULE_0__TaskInput_vue___default.a
     },
     methods: {
-        getTasks: function getTasks(task) {
+        getTasks: function getTasks() {
             var _this = this;
 
             axios.get('tasks').then(function (response) {
@@ -43311,35 +43311,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            spaces: {},
             inputText: ''
         };
     },
     methods: {
-        storeTaskItem: function storeTaskItem() {
+        getSpaces: function getSpaces() {
             var _this = this;
+
+            axios.get('spaces').then(function (response) {
+                _this.spaces = response.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
+        storeTaskItem: function storeTaskItem() {
+            var _this2 = this;
 
             axios.post('tasks', {
                 text: this.inputText,
                 csrf: this.csrf
             }).then(function (response) {
-                _this.inputText = "";
-                _this.$emit('task-added', response.data);
+                _this2.inputText = "";
+                _this2.$emit('task-added', response.data);
             }).catch(function (error) {
                 console.log(error);
             });
         }
+    },
+    created: function created() {
+        this.getSpaces();
     },
     mounted: function mounted() {}
 });
@@ -43394,74 +43401,29 @@ var render = function() {
       ? _c("div", [
           _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
           _vm._v(" "),
-          _vm._m(0)
+          _c(
+            "div",
+            {
+              staticClass: "btn-group",
+              attrs: { role: "group", "aria-label": "Room Type" }
+            },
+            _vm._l(_vm.spaces, function(space) {
+              return _c(
+                "button",
+                {
+                  key: space.id,
+                  staticClass: "btn btn-default",
+                  attrs: { type: "button" }
+                },
+                [_vm._v(_vm._s(space.name))]
+              )
+            })
+          )
         ])
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "btn-group",
-        attrs: { role: "group", "aria-label": "Room Type" }
-      },
-      [
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("客厅")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("厨房")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("浴室")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("厕所")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("洗漱间")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("洗衣房")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("卧室")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "button" } },
-          [_vm._v("阳台")]
-        )
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

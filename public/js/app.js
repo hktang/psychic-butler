@@ -43212,7 +43212,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "panel-heading" }, [
-      _c("h1", [_vm._v("Tasks")])
+      _c("h2", [_vm._v("Tasks")])
     ])
   }
 ]
@@ -43303,6 +43303,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43337,44 +43352,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-group has-feedback" }, [
-    _c("i", {
-      staticClass: "glyphicon glyphicon-ok-sign form-control-feedback"
-    }),
+  return _c("div", [
+    _c("div", { staticClass: "form-group has-feedback" }, [
+      _c("i", {
+        staticClass: "glyphicon glyphicon-ok-sign form-control-feedback"
+      }),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.inputText,
+            expression: "inputText"
+          }
+        ],
+        staticClass: "task-item-input form-control",
+        attrs: { placeholder: "Add a task" },
+        domProps: { value: _vm.inputText },
+        on: {
+          keyup: function($event) {
+            if (
+              !("button" in $event) &&
+              _vm._k($event.keyCode, "enter", 13, $event.key)
+            ) {
+              return null
+            }
+            _vm.storeTaskItem($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.inputText = $event.target.value
+          }
+        }
+      })
+    ]),
     _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.inputText,
-          expression: "inputText"
-        }
-      ],
-      staticClass: "task-item-input form-control",
-      attrs: { placeholder: "Add a task" },
-      domProps: { value: _vm.inputText },
-      on: {
-        keyup: function($event) {
-          if (
-            !("button" in $event) &&
-            _vm._k($event.keyCode, "enter", 13, $event.key)
-          ) {
-            return null
-          }
-          _vm.storeTaskItem($event)
-        },
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.inputText = $event.target.value
-        }
-      }
-    })
+    _vm.inputText != ""
+      ? _c("div", [
+          _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "btn-group",
+        attrs: { role: "group", "aria-label": "Room Type" }
+      },
+      [
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("客厅")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("厨房")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("浴室")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("厕所")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("洗漱间")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("洗衣房")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("卧室")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-default", attrs: { type: "button" } },
+          [_vm._v("阳台")]
+        )
+      ]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

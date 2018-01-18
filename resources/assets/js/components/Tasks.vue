@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h1>Tasks</h1></div>
+                    <div class="panel-heading"><h2>Tasks</h2></div>
 
                     <div class="panel-body">
                         <task-input v-on:task-added="addTask"></task-input>

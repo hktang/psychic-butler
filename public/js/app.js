@@ -43159,7 +43159,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6 col-md-offset-3" }, [
+      _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
         _c("div", { staticClass: "panel panel-default" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -43311,6 +43311,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43325,7 +43337,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.get('spaces').then(function (response) {
-                _this.spaces = response.data;
+                var dbSpaces;
+                dbSpaces = response.data;
+                dbSpaces.forEach(function (space) {
+                    space.isActive = false;
+                });
+                _this.spaces = dbSpaces;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -43398,32 +43415,72 @@ var render = function() {
     ]),
     _vm._v(" "),
     _vm.inputText != ""
-      ? _c("div", [
-          _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "btn-group",
-              attrs: { role: "group", "aria-label": "Room Type" }
-            },
-            _vm._l(_vm.spaces, function(space) {
-              return _c(
-                "button",
-                {
-                  key: space.id,
-                  staticClass: "btn btn-default",
-                  attrs: { type: "button" }
-                },
-                [_vm._v(_vm._s(space.name))]
-              )
-            })
-          )
-        ])
+      ? _c(
+          "div",
+          [
+            _c(
+              "div",
+              {
+                staticClass: "btn-group",
+                attrs: { role: "group", "aria-label": "Room Type" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._l(_vm.spaces, function(space) {
+                  return _c(
+                    "button",
+                    {
+                      key: space.id,
+                      class: [
+                        { active: space.isActive },
+                        "btn btn-sm btn-default"
+                      ],
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          space.isActive = !space.isActive
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(space.name))]
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
+            _vm._v(" "),
+            _c(
+              "transition-group",
+              { attrs: { name: "fade" } },
+              _vm._l(_vm.spaces, function(space) {
+                return space.isActive
+                  ? _c(
+                      "span",
+                      { key: space.id, staticClass: "label label-success" },
+                      [_vm._v(_vm._s(space.name))]
+                    )
+                  : _vm._e()
+              })
+            )
+          ],
+          1
+        )
       : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-sm btn-success disabled" }, [
+      _c("i", { staticClass: "glyphicon glyphicon-home" })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

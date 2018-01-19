@@ -43161,7 +43161,7 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
         _c("div", { staticClass: "panel panel-default" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "panel-heading" }, [_vm._v("走起")]),
           _vm._v(" "),
           _c(
             "div",
@@ -43206,16 +43206,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-heading" }, [
-      _c("h2", [_vm._v("Tasks")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -43323,6 +43314,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43356,6 +43351,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 csrf: this.csrf
             }).then(function (response) {
                 _this2.inputText = "";
+                _this2.spaces.forEach(function (space) {
+                    space.isActive = false;
+                });
                 _this2.$emit('task-added', response.data);
             }).catch(function (error) {
                 console.log(error);
@@ -43376,108 +43374,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("i", {
-        staticClass: "glyphicon glyphicon-ok-sign form-control-feedback"
-      }),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.inputText,
-            expression: "inputText"
-          }
-        ],
-        staticClass: "task-item-input form-control",
-        attrs: { placeholder: "Add a task" },
-        domProps: { value: _vm.inputText },
-        on: {
-          keyup: function($event) {
-            if (
-              !("button" in $event) &&
-              _vm._k($event.keyCode, "enter", 13, $event.key)
-            ) {
-              return null
-            }
-            _vm.storeTaskItem($event)
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.inputText = $event.target.value
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _vm.inputText != ""
-      ? _c(
-          "div",
-          [
-            _c(
-              "div",
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "form-group has-feedback" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
               {
-                staticClass: "btn-group",
-                attrs: { role: "group", "aria-label": "Room Type" }
+                name: "model",
+                rawName: "v-model",
+                value: _vm.inputText,
+                expression: "inputText"
+              }
+            ],
+            staticClass: "task-item-input form-control",
+            attrs: { placeholder: "Add a task" },
+            domProps: { value: _vm.inputText },
+            on: {
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key)
+                ) {
+                  return null
+                }
+                _vm.storeTaskItem($event)
               },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.inputText = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [
+        _vm.inputText != ""
+          ? _c(
+              "div",
               [
-                _vm._m(0),
+                _c("h3", [
+                  _c("span", { staticClass: "text-success" }, [
+                    _vm._v(_vm._s(_vm.inputText))
+                  ]),
+                  _vm._v(" 哪里搞？")
+                ]),
                 _vm._v(" "),
-                _vm._l(_vm.spaces, function(space) {
-                  return _c(
-                    "button",
-                    {
-                      key: space.id,
-                      class: [
-                        { active: space.isActive },
-                        "btn btn-sm btn-default"
-                      ],
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          space.isActive = !space.isActive
+                _c(
+                  "div",
+                  {
+                    staticClass: "btn-group",
+                    attrs: { role: "group", "aria-label": "Room Type" }
+                  },
+                  _vm._l(_vm.spaces, function(space) {
+                    return _c(
+                      "button",
+                      {
+                        key: space.id,
+                        class: [
+                          { active: space.isActive },
+                          "btn btn-sm btn-default"
+                        ],
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            space.isActive = !space.isActive
+                          }
                         }
-                      }
-                    },
-                    [_vm._v(_vm._s(space.name))]
-                  )
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
-            _vm._v(" "),
-            _c(
-              "transition-group",
-              { attrs: { name: "fade" } },
-              _vm._l(_vm.spaces, function(space) {
-                return space.isActive
-                  ? _c(
-                      "span",
-                      { key: space.id, staticClass: "label label-success" },
+                      },
                       [_vm._v(_vm._s(space.name))]
                     )
-                  : _vm._e()
-              })
+                  })
+                ),
+                _vm._v(" "),
+                _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
+                _vm._v(" "),
+                _c(
+                  "transition-group",
+                  { attrs: { name: "fade" } },
+                  _vm._l(_vm.spaces, function(space) {
+                    return space.isActive
+                      ? _c(
+                          "span",
+                          { key: space.id, staticClass: "label label-success" },
+                          [_vm._v(_vm._s(space.name))]
+                        )
+                      : _vm._e()
+                  })
+                )
+              ],
+              1
             )
-          ],
-          1
-        )
-      : _vm._e()
-  ])
+          : _vm._e()
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-sm btn-success disabled" }, [
-      _c("i", { staticClass: "glyphicon glyphicon-home" })
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "glyphicon glyphicon-circle-arrow-right" })
     ])
   }
 ]

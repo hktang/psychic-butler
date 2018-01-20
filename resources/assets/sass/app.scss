@@ -11,8 +11,10 @@
 
 /*-------------------- Labels --------------------------------------------*/
 
-.label:not(:first-child) {
+.task__label:not(:first-child),
+.task__button:not(:first-child) {
   margin-left: 5px;
+  margin-top: 5px;
 }
 
 

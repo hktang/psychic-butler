@@ -42976,6 +42976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -43001,7 +43002,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         addTask: function addTask(task) {
             this.tasks.push(task);
-            this.getTasks();
         },
         deleteTask: function deleteTask(task) {
             var _this2 = this;
@@ -43159,54 +43159,65 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
+      _c("div", { staticClass: "col-md-5" }, [
         _c("div", { staticClass: "panel panel-default" }, [
-          _c("div", { staticClass: "panel-heading" }, [_vm._v("走起")]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "div",
             { staticClass: "panel-body" },
             [_c("task-input", { on: { "task-added": _vm.addTask } })],
             1
-          ),
-          _vm._v(" "),
-          _c("table", { staticClass: "table" }, [
-            _c(
-              "tbody",
-              _vm._l(_vm.tasks, function(task) {
-                return _c(
-                  "tr",
-                  { key: task.id, attrs: { tasks: _vm.tasks } },
-                  [
-                    _c(
-                      "transition",
-                      { attrs: { name: "fade" } },
-                      [
-                        !task.deleted_at
-                          ? _c("task-item", {
-                              attrs: { task: task },
-                              on: {
-                                "single-task-deleted": function($event) {
-                                  _vm.deleteTask(task)
-                                }
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-7" }, [
+        _c("table", { staticClass: "table" }, [
+          _c(
+            "tbody",
+            _vm._l(_vm.tasks, function(task) {
+              return _c(
+                "tr",
+                { key: task.id, attrs: { tasks: _vm.tasks } },
+                [
+                  _c(
+                    "transition",
+                    { attrs: { name: "fade" } },
+                    [
+                      !task.deleted_at
+                        ? _c("task-item", {
+                            attrs: { task: task },
+                            on: {
+                              "single-task-deleted": function($event) {
+                                _vm.deleteTask(task)
                               }
-                            })
-                          : _vm._e()
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            )
-          ])
+                            }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            })
+          )
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _c("h4", [_vm._v("添加任务")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -43318,6 +43329,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43357,6 +43389,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.$emit('task-added', response.data);
             }).catch(function (error) {
                 console.log(error);
+                if (confirm("糟糕，太久没活动，需要刷新下页面。")) location.reload();
             });
         }
     },
@@ -43419,39 +43452,95 @@ var render = function() {
           ? _c(
               "div",
               [
-                _c("h3", [
+                _c("h4", [
                   _c("span", { staticClass: "text-success" }, [
                     _vm._v(_vm._s(_vm.inputText))
                   ]),
                   _vm._v(" 哪里搞？")
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "btn-group",
-                    attrs: { role: "group", "aria-label": "Room Type" }
-                  },
-                  _vm._l(_vm.spaces, function(space) {
-                    return _c(
-                      "button",
-                      {
-                        key: space.id,
-                        class: [
-                          { active: space.isActive },
-                          "btn btn-sm btn-default"
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            space.isActive = !space.isActive
-                          }
+                _vm._l(_vm.spaces, function(space) {
+                  return _c(
+                    "button",
+                    {
+                      key: space.id,
+                      class: [
+                        { active: space.isActive },
+                        "btn btn-sm btn-default task__button"
+                      ],
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          space.isActive = !space.isActive
                         }
-                      },
-                      [_vm._v(_vm._s(space.name))]
-                    )
-                  })
-                ),
+                      }
+                    },
+                    [_vm._v(_vm._s(space.name))]
+                  )
+                }),
+                _vm._v(" "),
+                _c("h4", [
+                  _c("span", { staticClass: "text-success" }, [
+                    _vm._v(_vm._s(_vm.inputText))
+                  ]),
+                  _vm._v(" 重复吗？")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "btn-group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default dropdown-toggle",
+                      attrs: {
+                        type: "button",
+                        "data-toggle": "dropdown",
+                        "aria-haspopup": "true",
+                        "aria-expanded": "false"
+                      }
+                    },
+                    [
+                      _vm._v("\n                    每两周 "),
+                      _c("span", { staticClass: "caret" })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("ul", { staticClass: "dropdown-menu" }, [
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("不重复")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("每周")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("每月")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("每季度")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("每半年")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("每年")])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", {
+                      staticClass: "divider",
+                      attrs: { role: "separator" }
+                    }),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [_vm._v("自定义")])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr"),
                 _vm._v(" "),
                 _c("h3", [_vm._v(_vm._s(_vm.inputText))]),
                 _vm._v(" "),
@@ -43462,17 +43551,32 @@ var render = function() {
                     return space.isActive
                       ? _c(
                           "span",
-                          { key: space.id, staticClass: "label label-success" },
+                          {
+                            key: space.id,
+                            staticClass: "label label-success task__label"
+                          },
                           [_vm._v(_vm._s(space.name))]
                         )
                       : _vm._e()
                   })
                 )
               ],
-              1
+              2
             )
           : _vm._e()
-      ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success",
+          attrs: { type: "button" },
+          on: { click: _vm.storeTaskItem }
+        },
+        [_vm._v("添加")]
+      )
     ],
     1
   )

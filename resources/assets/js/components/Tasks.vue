@@ -1,14 +1,16 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-5">
                 <div class="panel panel-default">
-                    <div class="panel-heading">走起</div>
+                    <div class="panel-heading"><h4>添加任务</h4></div>
 
                     <div class="panel-body">
                         <task-input v-on:task-added="addTask"></task-input>
                     </div>
-
+                </div>
+            </div>
+            <div class="col-md-7">
                     <table class="table">
                         <tbody>
                             <tr :tasks="tasks"
@@ -22,7 +24,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
             </div>
         </div>
     </div>
@@ -53,7 +54,6 @@
             },
             addTask(task){
                 this.tasks.push(task);
-                this.getTasks();
             },
             deleteTask(task){
                 task.deleted_at = true;

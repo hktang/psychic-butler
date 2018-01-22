@@ -19,6 +19,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "animate.css": "^3.5.2",
         "vuedraggable": "^2.16.0"
     }
 }

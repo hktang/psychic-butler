@@ -1,29 +1,29 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-sm-5">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h4>添加任务</h4></div>
 
                     <div class="panel-body">
-                        <task-input v-on:task-added="addTask"></task-input>
+                        <task-input v-on:task-added="addTaskComponent"></task-input>
                     </div>
                 </div>
             </div>
-            <div class="col-md-7">
-                    <table class="table">
-                        <tbody>
-                            <tr :tasks="tasks"
-                            v-for="task in tasks"
-                            :key="task.id">
-                            <transition name="fade">
-                                <task-item v-if="!task.deleted_at"
-                                v-on:single-task-deleted="deleteTask(task)"
-                                :task="task"></task-item>
-                            </transition>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="col-sm-7">
+                <table class="table">
+                    <tbody>
+                        <tr :tasks="tasks"
+                        v-for="task in tasks"
+                        :key="task.id">
+                            <task-item 
+                            v-bind:class="{ animated: task.deleted_at, 
+                                bounceOutRight: task.deleted_at }"
+                            v-on:single-task-deleted="deleteDbTask(task)"
+                            :task="task"></task-item>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -36,14 +36,13 @@
         data : function (){
             return {
                 tasks : {},
-                csrf  : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
         },
         components: {
             TaskItem, TaskInput
-            },
+        },
         methods: {
-            getTasks(){
+            getDbTasks(){
                 axios.get('tasks')
                 .then( response => {
                     this.tasks = response.data;
@@ -52,25 +51,28 @@
                     console.log(error);
                 });
             },
-            addTask(task){
+            addTaskComponent(task){
                 this.tasks.push(task);
             },
-            deleteTask(task){
+            deleteDbTask(task){
+                var taskDeleteFailure = false;
                 task.deleted_at = true;
                 axios.delete('tasks/'+task.id, {
-                    csrf : this.csrf,
                     id : task.id
-                })
-                .then( response => {
-                    this.getTasks();
-                })
-                .catch(function (error) {
+                }).then( response => {
+                    this.getDbTasks();
+                }).catch(function (error) {
                     console.log(error);
+                    taskDeleteFailure = true;
                 });
+                if(taskDeleteFailure){
+                    task.deleted_at = true;
+                    if (confirm("糟糕，太久没活动，需要刷新下页面。")) location.reload();
+                }
             },
         },
         created() {
-            this.getTasks();
+            this.getDbTasks();
         },
         mounted() {
         }

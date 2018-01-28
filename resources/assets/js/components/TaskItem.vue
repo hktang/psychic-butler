@@ -1,10 +1,10 @@
 <template>
-    <td class="task-item" >
+    <td class="task-item">
         {{singleTask.id}} - {{singleTask.text}} 
         <button type="button"
             class="close"
             aria-label="Close"
-            v-on:click="deleteTaskItem(singleTask.id)">
+            v-on:click="deleteTaskItemComponent(singleTask.id)">
         <span aria-hidden="true">&times;</span>
     </button>
     </td>
@@ -19,11 +19,9 @@
             };
         },
         mounted() {
-            console.log("Mounted:");
-            console.log(this);
         },
         methods: {
-            deleteTaskItem : function (tid) {
+            deleteTaskItemComponent : function (tid) {
                 this.$emit('single-task-deleted');
             }
         }
